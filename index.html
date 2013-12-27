@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<title>SHITCHAT - THE SHITTIEST CHAT CLIENT EVER</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	</head>
+	<body style="font-family: monospace">
+		<script>
+			var socket = io.connect();
+
+			socket.on('message', function(data){
+				$('div').html(data.message + '<br />' + $('div').html());
+			});
+
+			socket.on('user_count', function(data){
+				$('#usersonline').html(data.message);
+			});
+
+			$(document).ready(function(){
+				$('#text').keypress(function(e){
+					if(e.charCode == 13 || e.keycode == 13 || e.which == 13) {
+						if ($('#text').val().replace(/\n|\r/g, '') == "/clear") {
+							$('div').html('');
+							$('#text').val('');
+							return;
+						}
+						socket.emit('client_response', {'message': $('#text').val().replace(/\n|\r/g, '')});
+						$('#text').val('');
+					}
+				})
+			})
+		</script>
+		<textarea id="text" rows="1" cols="100" width="100%"></textarea><span id="usersonline"></span> users online
+		<div width="100%" id="fuckoff">
+		</div>
+	</body>
+</html>
