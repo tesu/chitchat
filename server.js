@@ -24,14 +24,13 @@ io.sockets.on('connection', function(socket){
 	io.sockets.emit('user_count', {'message': clients.length});
 
 	socket.on('client_response', function(data){
-		if (data.message.replace(/(<|>|\n|\r|\s|&nbsp)/g, '') == '') {
+		if (data.message.replace(/(<|>|\n|\r|\s|&nbsp;)/g, '') == '') {
 			socket.emit('message', {'message': 'You can\'t send an empty message you faglord.'});
 			return;
 		}
 
 		if (data.message.match(/^\//)) {
 			switch(data.message.split(' ') [0]) {
-				case '/clear': return;
 				case '/rickroll':
 					io.sockets.emit('message', {'message': socket.username + ' is never gonna give you up.'});
 					return;
@@ -59,9 +58,15 @@ io.sockets.on('connection', function(socket){
 					io.sockets.emit('message', {'message': io.sockets.socket(data.message.split(' ') [1].replace(/[<>]/g, '')).username + ' has been kicked from the server.'});
 					io.sockets.socket(data.message.split(' ') [1].replace(/[<>]/g, '')).disconnect();
 					return;
+				case '/help':
+					socket.emit('message', {'message': '/name [name] - Changes your username<br />/users - Returns the list of users<br />/clear - Clears the chat<br />/roll - Rolls a 6 sided die<br />/disconnect - Forces a disconnect for the user'});
+					return;
 				case '/users':
 					var message = listClients();
 					socket.emit('message', {'message': message})
+					return;
+				case '/roll':
+					io.sockets.emit('message', {'message': socket.username + ' rolled a ' + (Math.floor(Math.random() * 6) + 1) + "."});
 					return;
 				case '/id':
 					socket.emit('message', {'message': socket.id});

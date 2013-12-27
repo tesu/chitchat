@@ -9,7 +9,9 @@
 			var socket = io.connect();
 
 			socket.on('message', function(data){
-				$('div').html(data.message + '<br />' + $('div').html());
+				var time = new Date();
+				var timestamp = '[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ';
+				$('#fuckoff').html(timestamp + data.message + '<br />' + $('#fuckoff').html());
 			});
 
 			socket.on('user_count', function(data){
@@ -20,18 +22,34 @@
 				$('#text').keypress(function(e){
 					if(e.charCode == 13 || e.keycode == 13 || e.which == 13) {
 						if ($('#text').val().replace(/\n|\r/g, '') == "/clear") {
-							$('div').html('');
+							$('#fuckoff').html('');
 							$('#text').val('');
 							return;
 						}
+						if ($('#text').val().replace(/\n|\r/g, '') == "/disconnect") {
+							socket.disconnect();
+							return;
+						}
+
+
 						socket.emit('client_response', {'message': $('#text').val().replace(/\n|\r/g, '')});
 						$('#text').val('');
 					}
 				})
 			})
 		</script>
-		<textarea id="text" rows="1" cols="100" width="100%"></textarea><span id="usersonline"></span> users online
-		<div width="100%" id="fuckoff">
-		</div>
+		<h1>welcome to shitchat - the shittiest chat client</h1>
+		<table style="width: 100%;border: 0;border-spacing: 0;border-collapse: collapse;">
+			<tr>
+				<td>
+					<textarea id="text" rows="1" cols="100" width="100%" style="resize: none;"></textarea>
+				</td>
+				<td>
+					<span id="usersonline"></span> users online
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" id="fuckoff"></td>
+		</table>
 	</body>
 </html>
