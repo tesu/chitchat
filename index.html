@@ -3,15 +3,29 @@
 		<title>SHITCHAT - THE SHITTIEST CHAT CLIENT EVER</title>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Nixie+One' rel='stylesheet' type='text/css'>
 	</head>
-	<body style="font-family: monospace">
+	<body style="font-family: 'Nixie One', monospace; margin: 0; background-image: url(http://img4.ask.fm/wallpapers/299/638/744/original/1350701652049.jpg?1379894346); background-attachment: fixed; background-repeat: repeat; background-position: left top;">
 		<script>
 			var socket = io.connect();
 
 			socket.on('message', function(data){
 				var time = new Date();
-				var timestamp = '[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ';
-				$('#fuckoff').html(timestamp + data.message + '<br />' + $('#fuckoff').html());
+				var timestamp = '[';
+				if (time.getHours() < 10) {
+					timestamp += '0';
+				}
+				timestamp += time.getHours() + ':'
+				if (time.getMinutes() < 10) {
+					timestamp += '0';
+				}
+				timestamp += time.getMinutes() + ':'
+				if (time.getSeconds() < 10) {
+					timestamp += '0';
+				}
+				timestamp += time.getSeconds() + '] ';
+				$('#fuckoff').val($('#fuckoff').val() + timestamp + data.message + "\n");
+				$('#fuckoff').scrollTop($('#fuckoff')[0].scrollHeight);
 			});
 
 			socket.on('user_count', function(data){
@@ -22,7 +36,7 @@
 				$('#text').keypress(function(e){
 					if(e.charCode == 13 || e.keycode == 13 || e.which == 13) {
 						if ($('#text').val().replace(/\n|\r/g, '') == "/clear") {
-							$('#fuckoff').html('');
+							$('#fuckoff').val('');
 							$('#text').val('');
 							return;
 						}
@@ -38,18 +52,12 @@
 				})
 			})
 		</script>
-		<h1>welcome to shitchat - the shittiest chat client</h1>
-		<table style="width: 100%;border: 0;border-spacing: 0;border-collapse: collapse;">
-			<tr>
-				<td>
-					<textarea id="text" rows="1" cols="100" width="100%" style="resize: none;"></textarea>
-				</td>
-				<td>
-					<span id="usersonline"></span> users online
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" id="fuckoff"></td>
-		</table>
+		<h1>welcome to shitchat - the shittiest chat client ever</h1>
+		<textarea id="fuckoff" style="width: 100%; height: 80%;" disabled="disabled"></textarea>
+
+		<div style="position: fixed; bottom: 0; margin: 0; width: 100%">
+			<textarea id="text" rows="1" style="resize: none; overflow: hidden; margin: 0; width: 80%"></textarea>
+			<span style="position: fixed; right: 0;"><span id="usersonline"></span> users online</span>
+		</div>
 	</body>
 </html>

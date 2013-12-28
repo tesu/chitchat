@@ -59,7 +59,7 @@ io.sockets.on('connection', function(socket){
 					io.sockets.socket(data.message.split(' ') [1].replace(/[<>]/g, '')).disconnect();
 					return;
 				case '/help':
-					socket.emit('message', {'message': '/name [name] - Changes your username<br />/users - Returns the list of users<br />/clear - Clears the chat<br />/roll - Rolls a 6 sided die<br />/disconnect - Forces a disconnect for the user'});
+					socket.emit('message', {'message': '\n/name [name] - Changes your username\n/users - Returns the list of users\n/clear - Clears the chat\n/roll - Rolls a 6 sided die\n/disconnect - Forces a disconnect for the user'});
 					return;
 				case '/users':
 					var message = listClients();
@@ -101,9 +101,9 @@ io.sockets.on('connection', function(socket){
 });
 
 function listClients(){
-	var output = '';
+	var output = '\n';
 	for(var i = 0; i < clients.length; i++) {
-		output += clients[i] + '-' + io.sockets.socket(clients[i]).handshake.address.address + ': ' + io.sockets.socket(clients[i]).username + '<br />';
+		output += clients[i] + '-' + io.sockets.socket(clients[i]).handshake.address.address + ': ' + io.sockets.socket(clients[i]).username + '\n';
 	}
 	return output;
 }
