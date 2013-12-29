@@ -6,11 +6,9 @@
 		<link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 		<link href='styles.css' rel='stylesheet' type='text/css'>
 	</head>
-	<body style="">
+	<body>
 		<script>
-			var socket = io.connect();
-
-			socket.on('message', function(data){
+			function getTimestamp() {
 				var time = new Date();
 				var timestamp = '[';
 				if (time.getHours() < 10) {
@@ -25,6 +23,13 @@
 					timestamp += '0';
 				}
 				timestamp += time.getSeconds() + '] ';
+				return timestamp;
+			}
+
+			var socket = io.connect();
+
+			socket.on('message', function(data){
+				var timestamp = getTimestamp();
 				$('#fuckoff').val($('#fuckoff').val() + timestamp + data.message + "\n");
 				$('#fuckoff').scrollTop($('#fuckoff')[0].scrollHeight);
 			});
@@ -43,6 +48,8 @@
 						}
 						if ($('#text').val().replace(/\n|\r/g, '') == "/disconnect") {
 							socket.disconnect();
+							var timestamp = getTimestamp();
+							$('#fuckoff').val($('#fuckoff').val() + timestamp + "You disconnected.\n");
 							return;
 						}
 
@@ -51,7 +58,7 @@
 						$('#text').val('');
 					}
 				})
-			})
+			});
 		</script>
 		<h1>welcome to shitchat - the shittiest chat client ever</h1>
 		<textarea id="fuckoff" disabled="disabled"></textarea>

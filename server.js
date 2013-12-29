@@ -2,6 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var url = require('url');
 var clients = [];
+var port = 420;
 
 var server = http.createServer(function(request, response){ 
 	if (url.parse(request.url).pathname == "/styles.css") {
@@ -23,7 +24,7 @@ var server = http.createServer(function(request, response){
 	}
 });
 
-server.listen(420);
+server.listen(port);
 
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
@@ -32,10 +33,12 @@ io.sockets.on('connection', function(socket){
 	var lastMessage;
 	var lastMessageTime;
 	clients.push(socket.id);
+	console.log(socket.handshake.address.address + ' connected');
 	io.sockets.emit('message', {'message': socket.username + ' connected!'});
 	io.sockets.emit('user_count', {'message': clients.length});
 
 	socket.on('client_response', function(data){
+		if (typeof data.message != 'string') return;
 		if (data.message.replace(/(<|>|\n|\r|\s|&nbsp;)/g, '') == '') {
 			socket.emit('message', {'message': 'You can\'t send an empty message you faglord.'});
 			return;
@@ -109,6 +112,7 @@ io.sockets.on('connection', function(socket){
 		clients.splice(clients.indexOf(socket.id), 1);
 		socket.broadcast.emit('message', {'message': socket.username + ' disconnected!'});
 		socket.broadcast.emit('user_count', {'message': clients.length});
+		console.log(socket.handshake.address.address + ' disconnected');
 	})
 });
 
