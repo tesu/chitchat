@@ -13,6 +13,21 @@ var server = http.createServer(function(request, response){
 			response.end();
 			return;
 		})
+	} else if (url.parse(request.url).pathname == "/gradient.png") {
+		fs.readFile("gradient.png", function(error, data){
+			if (error) throw error;
+			response.writeHead(200, {'Content-Type': 'image/png'});
+			response.end(data, 'binary');
+		})
+	} else if (url.parse(request.url).pathname == "/script.js") {
+		fs.readFile("script.js", function(error, data){
+			if (error) throw error;
+			response.writeHead(200, {'Content-Type': 'text/javascript'});
+			response.write(data);
+			response.end();
+			return;
+		})
+
 	} else {
 		fs.readFile("index.html", function(error, data){
 			if (error) throw error;
@@ -85,6 +100,13 @@ io.sockets.on('connection', function(socket){
 					return;
 				case '/id':
 					socket.emit('message', {'message': socket.id});
+					return;
+				case '/debug':
+					var bigString = '';
+					for (var i = 0; i < 200; i++) {
+						bigString += '\n' + i;
+					}
+					socket.emit('message', {'message': bigString});
 					return;
 				default: 
 					socket.emit('message', {'message': 'Invalid command.'});

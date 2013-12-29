@@ -1,9 +1,9 @@
 body {
 	font-family: Inconsolata, monospace;
 	margin: 0;
-	background-image: url(http://img4.ask.fm/wallpapers/299/638/744/original/1350701652049.jpg?1379894346);
+	background-image: url(gradient.png);
 	background-attachment: fixed;
-	background-repeat: repeat;
+	background-repeat: repeat-x;
 	background-position: left top;
 	position: fixed;
 	top: 0;
@@ -24,6 +24,10 @@ textarea#fuckoff {
 	font-family: Inconsolata, monospace;
 	border: none;
 	outline: none;
+	background: transparent;
+	color: black;
+	font-size: 1em;
+	resize: none;
 }
 
 textarea#text {
