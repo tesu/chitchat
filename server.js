@@ -1,14 +1,26 @@
 var http = require('http');
 var fs = require('fs');
+var url = require('url');
 var clients = [];
 
 var server = http.createServer(function(request, response){ 
-	fs.readFile("index.html", function(error, data){
-		if (error) throw error;
-		response.writeHead(200, {'Content-Type': 'text/html'});
-		response.write(data);
-		response.end();
-	});
+	if (url.parse(request.url).pathname == "/styles.css") {
+		fs.readFile("styles.css", function(error, data){
+			if (error) throw error;
+			response.writeHead(200, {'Content-Type': 'text/css'});
+			response.write(data);
+			response.end();
+			return;
+		})
+	} else {
+		fs.readFile("index.html", function(error, data){
+			if (error) throw error;
+			response.writeHead(200, {'Content-Type': 'text/html'});
+			response.write(data);
+			response.end();
+			return;
+		});
+	}
 });
 
 server.listen(420);

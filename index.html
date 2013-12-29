@@ -3,9 +3,10 @@
 		<title>SHITCHAT - THE SHITTIEST CHAT CLIENT EVER</title>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Nixie+One' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+		<link href='styles.css' rel='stylesheet' type='text/css'>
 	</head>
-	<body style="font-family: 'Nixie One', monospace; margin: 0; background-image: url(http://img4.ask.fm/wallpapers/299/638/744/original/1350701652049.jpg?1379894346); background-attachment: fixed; background-repeat: repeat; background-position: left top;">
+	<body style="">
 		<script>
 			var socket = io.connect();
 
@@ -53,11 +54,11 @@
 			})
 		</script>
 		<h1>welcome to shitchat - the shittiest chat client ever</h1>
-		<textarea id="fuckoff" style="width: 100%; height: 80%;" disabled="disabled"></textarea>
+		<textarea id="fuckoff" disabled="disabled"></textarea>
 
-		<div style="position: fixed; bottom: 0; margin: 0; width: 100%">
-			<textarea id="text" rows="1" style="resize: none; overflow: hidden; margin: 0; width: 80%"></textarea>
-			<span style="position: fixed; right: 0;"><span id="usersonline"></span> users online</span>
+		<div id="footer">
+			<textarea id="text" rows="1"></textarea>
+			<span id="span"><span id="usersonline"></span> users online</span>
 		</div>
 	</body>
 </html>
