@@ -54,7 +54,7 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('client_response', function(data){
 		if (typeof data.message != 'string') return;
-		if (data.message.replace(/(<|>|\n|\r|\s|&nbsp;)/g, '') == '') {
+		if (data.message.replace(/(\n|\r|\s|&nbsp;)/g, '') == '') {
 			socket.emit('message', {'message': 'You can\'t send an empty message you faglord.'});
 			return;
 		}
@@ -66,18 +66,18 @@ io.sockets.on('connection', function(socket){
 					return;
 				case '/name':
 					if(typeof data.message.split(' ') [1] != 'string') return;
-					io.sockets.emit('message', {'message': socket.username + ' has changed their name to ' + data.message.split(' ') [1].replace(/[<>]/g, '') + '.'});
-					socket.username = data.message.split(' ') [1].replace(/[<>]/g, '');
+					io.sockets.emit('message', {'message': socket.username + ' has changed their name to ' + data.message.split(' ') [1].replace(/(\n|\r)/g, '') + '.'});
+					socket.username = data.message.split(' ') [1].replace(/(\n|\r)/g, '');
 					return;
 				case '/join':
 					if(typeof data.message.split(' ') [1] != 'string') return;
-					socket.emit('message', {'message': 'Joined ' + data.message.split(' ') [1].replace(/[<>]/g, '')});
-					socket.join(data.message.split(' ') [1].replace(/[<>]/g, ''));
+					socket.emit('message', {'message': 'Joined ' + data.message.split(' ') [1].replace(/(\n|\r)/g, '')});
+					socket.join(data.message.split(' ') [1].replace(/(\n|\r)/g, ''));
 					return;
 				case '/leave':
 					if(typeof data.message.split(' ') [1] != 'string') return;
-					socket.emit('message', {'message': 'Left ' + data.message.split(' ') [1].replace(/[<>]/g, '')});
-					socket.leave(data.message.split(' ') [1].replace(/[<>]/g, ''));
+					socket.emit('message', {'message': 'Left ' + data.message.split(' ') [1].replace(/(\n|\r)/g, '')});
+					socket.leave(data.message.split(' ') [1].replace(/(\n|\r)/g, ''));
 					return;
 				case '/kick':
 					if(socket.handshake.address.address != "127.0.0.1") {
@@ -127,7 +127,7 @@ io.sockets.on('connection', function(socket){
 		lastMessage = data.message;
 		lastMessageTime = new Date().getTime();
 
-		io.sockets.emit('message', {'message': socket.username + ": " + data.message.replace(/[<>]/g, '')});
+		io.sockets.emit('message', {'message': socket.username + ": " + data.message.replace(/(\n|\r)/g, '')});
 	});
 
 	socket.on('disconnect', function(){
